@@ -1,6 +1,6 @@
 /* -*- mode: c; c-file-style: "openbsd" -*- */
 /*
- * Copyright (c) 2014 Michael T. Schmidt <schmidmt@gmail.com>
+ * Copyright (c) 2016 Michael T. Schmidt <schmidmt@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,10 +25,31 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
+/**
+ * @brief Generate a HMAC One Time Password (HOTP)
+ *
+ * This generates a HOTP code ([RFC 6238](https://tools.ietf.org/html/rfc6238)).
+ *
+ * # Errors
+ * If any error occures, the return value will be less than zero.
+ *
+ * @param secret Shared secret used to authenticate.
+ * @param secret_len Length of secret key.
+ * @param counter Counter representing number of authentications or some other monotonically increasing number.
+ * @param digits Number of digits to return
+ * @param cipher Name of cipher to use (NULL = SHA1)
+ * @returns HOTP code
+ */
 int
-HOTPGenerate(void * secret, int secret_len, uint64_t counter, int digits);
+HOTPGenerate(void * secret, int secret_len, uint64_t counter, int digits, const char * cipher);
 
 int
-HOTPValidate(int code, void * secret, int secret_len, uint64_t counter, int digits, uint64_t lookahead);
+HOTPValidate(int code, void * secret, int secret_len, uint64_t counter, int digits, uint64_t lookahead, const char * cipher);
+
+int
+TOTPGenerate(void * secret, int secret_len, int digits, int timestep, const char * cipher)
+
+int
+TOTPValidate(int code, void * secret, int secret_len, int digits, int timestep, const char * cipher, uint64_t margin);
 
 #endif /*_OTP_H */

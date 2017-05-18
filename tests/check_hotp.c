@@ -13,7 +13,7 @@ START_TEST(test_rfc4226_values)
 	int key_len = sizeof(key);
 
 	for (uint64_t c = 0; c < sizeof(hotp_values) / sizeof(hotp_values[0]); ++c) {
-		int hotp = HOTPGenerate(key, key_len, c, 6);
+		int hotp = HOTPGenerate(key, key_len, c, 6, NULL);
 		ck_assert_int_eq(hotp, hotp_values[c]);
 	}
 }
